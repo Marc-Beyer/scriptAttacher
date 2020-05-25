@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>JSAttacher options</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='./style/main.css'>
+    <script src="./shared/container.js"></script>
+</head>
+<body>
+    <img id="loadingImg" src="../shared/imgs/loading.gif">
+    <div>
+        <h1>Options</h1>
+        <div id="selectionContainer">
+            <div class="selectContainer">
+                <div class="selectContainerHeader">
+                    <h2>Urls</h2>
+                    <button id="urlsAddBtn">+</button>
+                </div>
+                <select multiple="multiple" id="urlSelect"></select>
+            </div>
+            <div class="selectContainer">
+                <div class="selectContainerHeader">
+                    <h2>Files</h2>
+                    <button id="filesAddBtn">+</button>
+                </div>
+                <select multiple="multiple" id="fileSelect"></select>
+            </div>
+        </div>
+        <div id="fileHeader">
+            <input type="text" id="fileNameInput" title="name">
+            <select id="fileTypeSelect"  title="type">
+                <option value="js">js</option>
+                <option value="css">css</option>
+                <option value="script-link">script-link</option>
+                <option value="other">other</option>
+            </select>
+            <input type="text" id="fileUrlsInput" title="the urls are separated by a whitespace-character (this:' ')">
+            <button id="fileSaveBtn">save</button>
+        </div>
+        <textarea id="fileTextArea"></textarea>
+        <div id="fileLable">file selected: '' - this is a new file</label>
+    </div>
+    <script src='./scripts/main.js'></script>
+</body>
+</html>
