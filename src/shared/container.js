@@ -1,3 +1,11 @@
+// A tamplate for a new file
+let defaultFile = {
+    name: "new file",
+    type: "js",
+    urls: [".*"],
+    file: "// Insert your code here //"
+}
+
 //defaultStorage is set when the the add-on is installed
 const defaultStorage = {files:[
     {

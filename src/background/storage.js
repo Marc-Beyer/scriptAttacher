@@ -33,7 +33,11 @@ async function handleTabUpdate(tabId, changeInfo, tabInfo) {
         // Send a msg to the content_controller with the files to add if there are files to add
         let addFiles = getFilesWithUrl(tabInfo.url);
         if(addFiles.length > 0){
-            browser.tabs.sendMessage(tabId, createAddFilesMsg(addFiles));
+            try {
+                browser.tabs.sendMessage(tabId, createAddFilesMsg(addFiles));
+            } catch (error) {
+                // ERR
+            }
         }
     }
 }
@@ -71,6 +75,7 @@ browser.runtime.onMessage.addListener((msg, sender) => {
             resolve(files);
         });
     }
+
     if(msg.info === "fileEdited"){
         console.log("files before edit", files);
         if(msg.oldFile === undefined){
@@ -90,6 +95,14 @@ browser.runtime.onMessage.addListener((msg, sender) => {
         }
         console.log("files after edit", files);
         
+        browser.storage.local.set({files:files});
+        return new Promise((resolve) => {
+            resolve(files);
+        });
+    }
+
+    if(msg.info === "filesLoaded"){
+        files = msg.newFiles;
         browser.storage.local.set({files:files});
         return new Promise((resolve) => {
             resolve(files);

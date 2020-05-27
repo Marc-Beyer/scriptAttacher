@@ -3,10 +3,11 @@
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>JSAttacher options</title>
+    <title>Script Attacher | options</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel='stylesheet' type='text/css' media='screen' href='./style/main.css'>
-    <script src="./shared/container.js"></script>
+    <script src="../../shared/download_lib.js"></script>
+    <script src="../../shared/container.js"></script>
 </head>
 <body>
     <img id="loadingImg" src="../shared/imgs/loading.gif">
@@ -40,7 +41,17 @@
             <button id="fileSaveBtn">save</button>
         </div>
         <textarea id="fileTextArea"></textarea>
-        <div id="fileLable">file selected: '' - this is a new file</label>
+        <div id="fileLable">
+            <span id="fileLableSpan">file selected: '' - this is a new file</span>
+            <button id="fileDeleteBtn">x</button>
+            <button id="fileUpBtn">v</button>
+            <button id="fileDownBtn">v</button>
+        </div>
+        <div id="moreOptionsContainer">
+            <button id="importBtn">import</button>
+            <button id="exportBtn">export</button>
+        </div>
+        <input type="file" id="fileLoaderBtn" name="fileLoaderBtn" style="display: none;">
     </div>
     <script src='./scripts/main.js'></script>
 </body>

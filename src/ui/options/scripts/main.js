@@ -6,18 +6,16 @@ let fileNameInput = document.getElementById("fileNameInput");
 let fileTypeSelect = document.getElementById("fileTypeSelect");
 let fileUrlsInput = document.getElementById("fileUrlsInput");
 let fileSaveBtn = document.getElementById("fileSaveBtn");
-let fileLable = document.getElementById("fileLable");
+let fileLableSpan = document.getElementById("fileLableSpan");
 let urlsAddBtn = document.getElementById("urlsAddBtn");
 let filesAddBtn = document.getElementById("filesAddBtn");
 let loadingImg = document.getElementById("loadingImg");
-
-// A tamplate for a new file
-let defaultFile = {
-    name: "new file",
-    type: "js",
-    urls: [".*"],
-    file: "// Insert your code here //"
-}
+let importBtn = document.getElementById("importBtn");
+let exportBtn = document.getElementById("exportBtn");
+let fileLoaderBtn = document.getElementById("fileLoaderBtn");
+let fileDeleteBtn = document.getElementById("fileDeleteBtn");
+let fileUpBtn = document.getElementById("fileUpBtn");
+let fileDownBtn = document.getElementById("fileDownBtn");
 
 // All files loaded from storage
 let files;
@@ -43,6 +41,15 @@ function createFileEditedMsg(oldFile, newFile){
         info: "fileEdited",
         oldFile: oldFile,
         newFile: newFile
+    };
+}
+
+// Returns a filesLoaded-msg
+function createFilesLoadedMsg(newFiles){
+    return {
+        receiver: "background_storage",
+        info: "filesLoaded",
+        newFiles: newFiles
     };
 }
 
@@ -93,6 +100,8 @@ function updateUrlSelect(){
     for (let url of urls) {
         addOption(urlSelect, url);
     }
+    urlSelect.value = "<all files>";
+    updatefileSelect(urlSelect.value);
 }
 
 // Get the selected url and get all relatet files and load them into the fileSelect
@@ -109,6 +118,9 @@ function updatefileSelect(url){
             }
         }
     }
+    if(curFile !== undefined){
+        fileSelect.value = curFile.name;
+    }
 }
 
 // Get the selected file and load it into the fileTextArea and fileNameInput
@@ -117,11 +129,14 @@ function updateFileContainer(name){
         // Check if there are unsafed changes and ask the user if he/she wants to continue
         let confirmed = confirm("You have unsaved changes! Do you still want to open a new file and loose all unsaved changes?")
         if(!confirmed){
+            // Update selection
+            updatefileSelect(urlSelect.value);
             return;
         }
         curFileEdited = false;
     }
-
+ 
+    //todo not nice
     if(name === undefined){
         fileNameInput.value = defaultFile.name;
         fileTypeSelect.value = defaultFile.type;
@@ -134,6 +149,12 @@ function updateFileContainer(name){
             fileUrlsInput.value = "";
         }
         fileTextArea.value = defaultFile.file;
+        return;
+    }else if(name === null){
+        fileNameInput.value = "";
+        fileTypeSelect.value = defaultFile.type;
+        fileUrlsInput.value = "";
+        fileTextArea.value = "";
         return;
     }
 
@@ -212,23 +233,25 @@ async function fileSaveBtnClickHandler(){
         }else{
             curFileEdited = false;
             files = await browser.runtime.sendMessage(createFileEditedMsg(curFile, newFile));
-            setUrl();
             setCurFile(newFile);
+            setUrl();
         }
     }
     loadingImg.style.display = "none";
 }
 
-// Set the curFile and the fileLable
+// Set the curFile and the fileLableSpan
 function setCurFile(file){
     curFile = file;
     if(curFile === undefined){
-        fileLable.innerText = "file selected: '' - this is a new file";
+        fileLableSpan.innerText = "file selected: '' - this is a new file";
     }else{
-        fileLable.innerText = "file selected: '" + curFile.name + "  [" + curFile.type + "]'";
+        fileLableSpan.innerText = "file selected: '" + curFile.name + "  [" + curFile.type + "]'";
     }
 }
 
+// Handle a keypress while fileTextArea is focused
+// Use tabs in fileTextArea 
 function fileTextAreaKeydownHandler(event){
     let keyCode = event.keyCode || event.which;
 
@@ -241,10 +264,14 @@ function fileTextAreaKeydownHandler(event){
     }
 }
 
+// Handle a click on filesAddBtn
 function filesAddBtnClickHandler(){
+    // Check if unsaved changes exist and ask the user if he/she wants to continue
     if(curFileEdited){
         let confirmed = confirm("You have unsaved changes! Do you still want to open a new file and loose all unsaved changes?")
         if(!confirmed){
+            // Update selection
+            updatefileSelect(urlSelect.value);
             return;
         }
         curFileEdited = false;
@@ -253,6 +280,126 @@ function filesAddBtnClickHandler(){
     setCurFile(undefined);
     updateFileContainer(undefined);
     curFileEdited = true;
+    
+    // Update selection
+    urlSelect.value = "<all files>";
+    updatefileSelect(urlSelect.value);
+}
+
+// Handle a click on importBtn
+// Click the hidden fileLoaderBtn
+function importBtnClickHandler(){
+    fileLoaderBtn.click();
+}
+
+// Handle a click on exportBtn
+async function exportBtnClickHandler(){
+    download(JSON.stringify({files:files}, null, 2), "scriptAttacher-bka", "application/json");
+}
+
+// If file is Loaded 
+async function onLoad(event) {
+    let fileString = event.target.result;
+    let jsonFiles = JSON.parse(fileString);
+
+    // Check if filenames already exist
+    let duplicatedFileNames = [];
+    for (let file of files) {
+        for (let importedFile of jsonFiles.files) {
+            if(file.name === importedFile.name){
+                duplicatedFileNames.push(importedFile.name);
+            }
+        }
+    }
+    // Ask user if he/she wants to override duplicated filenames
+    if(duplicatedFileNames.length > 0){
+        let duplicatedFileNamesString = "";
+        for (let filename of duplicatedFileNames) {
+            duplicatedFileNamesString += "\n" + filename;
+        }
+        let confirmed = confirm(duplicatedFileNames.length + " file name(s) already exist! If you continue they/it will be overritten!\nDuplicated filename(s):" + duplicatedFileNamesString);
+        if(!confirmed){
+            loadingImg.style.display = "none";
+            return;
+        }
+    }
+    // Remove all files with same names
+    for (let filename of duplicatedFileNames) {
+        for (let index = 0; index < files.length; index++) {
+            if(filename === files[index].name){
+                files.splice(index, 1);
+            }
+            
+        }
+    }
+    // Concat
+    files = files.concat(jsonFiles.files);
+
+    files = await browser.runtime.sendMessage(createFilesLoadedMsg(files));
+    setUrl();
+    loadingImg.style.display = "none";
+}
+
+// Get the choosen file and read it as text
+function startRead(event) {
+    loadingImg.style.display = "block";
+    let file = fileLoaderBtn.files[0];
+    if (file) {
+        let fileReader = new FileReader();
+
+        fileReader.readAsText(file, "UTF-8");
+
+        fileReader.onload = onLoad;
+    }
+}
+
+// Handle the click on fileDeleteBtn
+async function fileDeleteBtnClickHandler(){
+    loadingImg.style.display = "block";
+    files = await browser.runtime.sendMessage(createFileEditedMsg(curFile, undefined));
+    curFile = undefined;
+    updateFileContainer(null);
+    setCurFile();
+    setUrl();
+    loadingImg.style.display = "none";
+}
+
+// Move file
+async function moveFileHandler(indexShift){
+    loadingImg.style.display = "block";
+
+    // Get the index of the curFile
+    index = -1;
+    // Check if a curFile exists
+    if(curFile === undefined){
+        loadingImg.style.display = "none";
+        return;
+    }
+    for (let i = 0; i < files.length; i++) {
+        if(files[i].name === curFile.name){
+            index = i;
+        }
+    }
+    // Could not find the curFile in files
+    if(index === -1){
+        loadingImg.style.display = "none";
+        return;
+    }
+
+    // Move file
+    files.splice(index, 1);
+    indexShift = index + indexShift;
+    if(indexShift < 0){
+        indexShift = 0;
+    }else if(indexShift > files.length){
+        indexShift = files.length;
+    }
+    files.splice(indexShift, 0, curFile);
+
+    // Send to update backround
+    files = await browser.runtime.sendMessage(createFilesLoadedMsg(files));
+    setUrl();
+    loadingImg.style.display = "none";
 }
 
 // Add Listener
@@ -263,11 +410,19 @@ fileNameInput.addEventListener("change", fileChangeHandler);
 fileTypeSelect.addEventListener("change", fileChangeHandler);
 fileUrlsInput.addEventListener("change", fileChangeHandler);
 fileSaveBtn.addEventListener("click", fileSaveBtnClickHandler);
-
 fileTextArea.addEventListener("keydown", fileTextAreaKeydownHandler);
-
 filesAddBtn.addEventListener("click", filesAddBtnClickHandler);
 urlsAddBtn.addEventListener("click", filesAddBtnClickHandler);
+fileDeleteBtn.addEventListener("click", fileDeleteBtnClickHandler);
+fileUpBtn.addEventListener("click", (event) => {moveFileHandler(-1)});
+fileDownBtn.addEventListener("click", (event) => {moveFileHandler(1)});
+importBtn.addEventListener("click", importBtnClickHandler);
+exportBtn.addEventListener("click", exportBtnClickHandler);
+
+if (window.File && window.FileReader && window.FileList && window.Blob) {
+    //The file-APIs are supported.
+    fileLoaderBtn.addEventListener('change', startRead, false);
+}
 
 // Get the stored files from background_storage and update urlSelect
 getFiles();
