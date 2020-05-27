@@ -18,7 +18,7 @@ function addJS(file){
 function addScriptlink(file){
     let script = document.createElement("script");
     script.id = "scriptAttacher_" + file.name;
-    script.className = "scriptAttacher_script";
+    script.className = "scriptAttacher_scriptlink";
     script.src =file.file;
 
     // Remove old scripts
@@ -35,7 +35,7 @@ function addCSS(file){
     let style = document.createElement("style");
     style.type = "text/css";
     style.id = "scriptAttacher_" + file.name;
-    style.className = "scriptAttacher_script";
+    style.className = "scriptAttacher_css";
     style.append(document.createTextNode(file.file));
 
     // Remove old styles
@@ -45,6 +45,23 @@ function addCSS(file){
         oldStyles = document.getElementById(style.id);
     }
     document.head.appendChild(style);
+}
+
+// Add other file
+function addOther(file){
+    jsonFile = JSON.parse(file.file);
+    let other = document.createElement(jsonFile.tagName);
+    if(jsonFile.text !== undefined){
+        other.append(document.createTextNode(jsonFile.text));
+    }
+    for (let key of Object.keys(jsonFile)) {
+        if(key !== "tagName" && key !== "text"){
+            other.setAttribute(key, jsonFile[key]);
+        }
+    }
+    other.id = "scriptAttacher_" + file.name;
+    other.className = "scriptAttacher_other";
+    document.head.appendChild(other);
 }
 
 // Handle incoming msgs
@@ -64,6 +81,9 @@ browser.runtime.onMessage.addListener((msg) => {
                     break;
                 case "script-link":
                     addScriptlink(file);
+                    break;
+                case "other":
+                    addOther(file);
                     break;
             
                 default:

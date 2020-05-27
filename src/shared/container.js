@@ -66,6 +66,12 @@ let waitForJQuery = setInterval(function () {
 }
 `
 
+    },
+    {
+        name: "Titillium Web Font",
+        type: "other",
+        urls: [".*"],
+        file: "// The 'other'-type has to be in json-format. all keys are attributes added to the node, exept 'tagName' and 'text'. 'tagName ' is the name of the node and 'text' the text appended as textnode\n{\n\t\"tagName\":\"link\",\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t//tagName is not optional\n\t\"href\":\"https://fonts.googleapis.com/css?family=Titillium+Web\",\t\t\t\t//optional\n\t\"rel\":\"stylesheet\",\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t//optional\n\t\"text\":\"\"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t//optional\n}"
     }
     
 ]}
