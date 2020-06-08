@@ -155,6 +155,10 @@ body #fileLable #fileUpBtn {
           transform: rotate(180deg);
 }
 
+body #fileLable #fileEnableDisablenBtn {
+  width: auto;
+}
+
 body #moreOptionsContainer {
   display: -webkit-box;
   display: -ms-flexbox;

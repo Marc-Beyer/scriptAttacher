@@ -5,18 +5,18 @@
 
 	"description": "Attach scripts to webpages.",
 	
-	"permissions": [
-		"storage",
-		"unlimitedStorage",
-		"tabs"
-	],
-	
 	"icons": {
 		"16": "/images/icon_16.png",
 		"32": "/images/icon_32.png",
 		"48": "/images/icon_48.png",
 		"96": "/images/icon_96.png"
 	},
+	
+	"permissions": [
+		"storage",
+		"unlimitedStorage",
+		"tabs"
+	],
 
 	"browser_action": {
 		"default_title": "Script Attacher (options)",

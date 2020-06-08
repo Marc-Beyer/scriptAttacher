@@ -32,10 +32,12 @@
     browser.tabs.onRemoved.addListener((tabId) => {
 		if(tabId === activeOptionsTabId)
             activeOptionsTabId = undefined;
+
+        browser.browserAction.openPopup();
 	});
 
     // Listen for msgs
-    browser.runtime.onMessage.addListener((msg, sender) => {
+    browser.runtime.onMessage.addListener((msg, sender) => { 
 		if(msg.receiver !== "background_browser_action")
 			return;
 

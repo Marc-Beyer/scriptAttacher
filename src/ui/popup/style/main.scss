@@ -1,0 +1,40 @@
+$primary-background-color: #1b1b1b;
+$secondary-background-color: #333333;
+$third-background-color: #424242;
+
+$primary-text-color: #d6d6d6;
+$secondary-text-color: #919191;
+
+body{
+    background: $primary-background-color;
+    color: $primary-text-color;
+
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+    width: calc(100% - 2rem);
+    margin: 1rem;
+    padding: 0;
+    
+    h1{
+        margin: 0;
+        font-size: 1.2rem;
+    }
+
+    #attachedScriptsContainer{
+        background: $secondary-background-color;
+        min-height: 5rem;
+        max-height: 20rem;
+        overflow-y: scroll;
+        margin-top: 1rem;
+    }
+
+    #optionsBtn{
+        background: $secondary-background-color;
+        color: $primary-text-color;
+        border: none;
+
+        margin-top: 1rem;
+        height: 1.3rem;
+        width: 100%;
+    }
+}

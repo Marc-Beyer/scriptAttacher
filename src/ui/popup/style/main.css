@@ -1,1 +1,31 @@
-/* No CSS *//*# sourceMappingURL=main.css.map */
+body {
+  background: #1b1b1b;
+  color: #d6d6d6;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  width: calc(100% - 2rem);
+  margin: 1rem;
+  padding: 0;
+}
+
+body h1 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+body #attachedScriptsContainer {
+  background: #333333;
+  min-height: 5rem;
+  max-height: 20rem;
+  overflow-y: scroll;
+  margin-top: 1rem;
+}
+
+body #optionsBtn {
+  background: #333333;
+  color: #d6d6d6;
+  border: none;
+  margin-top: 1rem;
+  height: 1.3rem;
+  width: 100%;
+}
+/*# sourceMappingURL=main.css.map */

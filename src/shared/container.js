@@ -1,6 +1,7 @@
 // A tamplate for a new file
 let defaultFile = {
     name: "new file",
+    isEnabled: false,
     type: "js",
     urls: [".*"],
     file: "// Insert your code here //"
@@ -10,12 +11,14 @@ let defaultFile = {
 const defaultStorage = {files:[
     {
         name: "jquery 3.5.1",
+        isEnabled: false,
         type: "script-link",
         urls: [".*"],
         file: "https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"
     },
     {
         name: "random backgroundColor with jquery",
+        isEnabled: false,
         type: "js",
         urls: [".*"],
         file: 
@@ -38,18 +41,21 @@ let waitForJQuery = setInterval(function () {
     },
     {
         name: "hello google",
+        isEnabled: false,
         type: "js",
         urls: ["^https*:\/\/www\.google\.de\/*.*$", "^https*:\/\/www\.google\.com\/*.*$"],
         file: "console.log(\"Hello google!\");"
     },
     {
         name: "hello google 2",
+        isEnabled: false,
         type: "js",
         urls: ["^https*:\/\/www\.google\.de\/*.*$", "^https*:\/\/www\.google\.com\/*.*$", "^https*:\/\/www\.google\..*$"],
         file: "console.log(\"Hello again!\");"
     },
     {
         name: "nice google layout",
+        isEnabled: false,
         type: "css",
         urls: ["^https*:\/\/www\.google\.com\/*$"],
         file: 
@@ -69,9 +75,10 @@ let waitForJQuery = setInterval(function () {
     },
     {
         name: "Titillium Web Font",
+        isEnabled: false,
         type: "other",
         urls: [".*"],
-        file: "// The 'other'-type has to be in json-format. all keys are attributes added to the node, exept 'tagName' and 'text'. 'tagName ' is the name of the node and 'text' the text appended as textnode\n{\n\t\"tagName\":\"link\",\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t//tagName is not optional\n\t\"href\":\"https://fonts.googleapis.com/css?family=Titillium+Web\",\t\t\t\t//optional\n\t\"rel\":\"stylesheet\",\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t//optional\n\t\"text\":\"\"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t//optional\n}"
+        file: "{\n\t\"_comment\":\"The 'other'-type has to be in json-format. all keys are attributes added to the node, exept 'tagName' and 'text'. 'tagName ' is the name of the node and 'text' the text appended as textnode\",\n\t\"tagName\":\"link\",\n\t\"href\":\"https://fonts.googleapis.com/css?family=Titillium+Web\",\n\t\"rel\":\"stylesheet\",\n\t\"text\":\"\"\n}"
     }
     
 ]}

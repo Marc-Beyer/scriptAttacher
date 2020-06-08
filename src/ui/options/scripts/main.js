@@ -16,6 +16,7 @@ let fileLoaderBtn = document.getElementById("fileLoaderBtn");
 let fileDeleteBtn = document.getElementById("fileDeleteBtn");
 let fileUpBtn = document.getElementById("fileUpBtn");
 let fileDownBtn = document.getElementById("fileDownBtn");
+let fileEnableDisablenBtn = document.getElementById("fileEnableDisablenBtn");
 
 // All files loaded from storage
 let files;
@@ -69,7 +70,6 @@ function setUrl(){
 // Get the files from background_storage and set file and urls
 async function getFiles(){
     files = await browser.runtime.sendMessage(createGetFilesMsg());
-    console.log("files", files);
     setUrl();
 }
 
@@ -81,13 +81,21 @@ function removeAllChilderen(parent){
 }
 
 // Add an optionto a select-emement
-function addOption(select, value, name){
+function addOption(select, value, name, isEnabled = true){
     let option = document.createElement("option");
     option.value = value;
     if(name === undefined){
-        option.append(document.createTextNode(value));
+        if(isEnabled){
+            option.append(document.createTextNode(value));
+        }else{
+            option.append(document.createTextNode("[DISABLED] " + value));
+        }
     }else{
-        option.append(document.createTextNode(name));
+        if(isEnabled){
+            option.append(document.createTextNode(name));
+        }else{
+            option.append(document.createTextNode("[DISABLED] " + name));
+        }
     }
     select.append(option);
 }
@@ -109,11 +117,11 @@ function updatefileSelect(url){
     removeAllChilderen(fileSelect);
     for (let file of files) {
         if(url === "<all files>"){
-            addOption(fileSelect, file.name, "[" + file.type + "] " + file.name);
+            addOption(fileSelect, file.name, "[" + file.type + "] " + file.name, file.isEnabled);
         }else{
             for (let fileUrl of file.urls) {
                 if(fileUrl === url){
-                    addOption(fileSelect, file.name, "[" + file.type + "] " + file.name);
+                    addOption(fileSelect, file.name, "[" + file.type + "] " + file.name, file.isEnabled);
                 }
             }
         }
@@ -200,6 +208,7 @@ function fileChangeHandler(event){
 function getNewFile(){
     let newFile = {
         name: fileNameInput.value,
+        isEnabled: fileEnableDisablenBtn.value === "true",
         type: fileTypeSelect.value,
         urls: fileUrlsInput.value.split(" "),
         file: fileTextArea.value
@@ -244,9 +253,19 @@ async function fileSaveBtnClickHandler(){
 function setCurFile(file){
     curFile = file;
     if(curFile === undefined){
-        fileLableSpan.innerText = "file selected: '' - this is a new file";
+        fileLableSpan.innerText = "file selected: '' is enabled. - this is a new file";
+        fileEnableDisablenBtn.value = true;
+        fileEnableDisablenBtn.textContent = "disable";
     }else{
         fileLableSpan.innerText = "file selected: '" + curFile.name + "  [" + curFile.type + "]'";
+        fileEnableDisablenBtn.value = curFile.isEnabled;
+        if(curFile.isEnabled){
+            fileEnableDisablenBtn.textContent = "disable";
+            fileLableSpan.innerText += " is enabled.";
+        }else{
+            fileEnableDisablenBtn.textContent = "enable";
+            fileLableSpan.innerText += " is disabled.";
+        }
     }
 }
 
@@ -364,6 +383,18 @@ async function fileDeleteBtnClickHandler(){
     loadingImg.style.display = "none";
 }
 
+// Handle the click on fileEnableDisablenBtn
+function fileEnableDisablenBtnClickHandler(){
+    if(fileEnableDisablenBtn.value === "true"){
+        fileEnableDisablenBtn.value = "false";
+        fileEnableDisablenBtn.textContent = "enable";
+    }else if(fileEnableDisablenBtn.value === "false"){
+        fileEnableDisablenBtn.value = "true";
+        fileEnableDisablenBtn.textContent = "disable";
+    }
+    curFileEdited = true;
+}
+
 // Move file
 async function moveFileHandler(indexShift){
     loadingImg.style.display = "block";
@@ -418,6 +449,7 @@ fileUpBtn.addEventListener("click", (event) => {moveFileHandler(-1)});
 fileDownBtn.addEventListener("click", (event) => {moveFileHandler(1)});
 importBtn.addEventListener("click", importBtnClickHandler);
 exportBtn.addEventListener("click", exportBtnClickHandler);
+fileEnableDisablenBtn.addEventListener("click", fileEnableDisablenBtnClickHandler);
 
 if (window.File && window.FileReader && window.FileList && window.Blob) {
     //The file-APIs are supported.

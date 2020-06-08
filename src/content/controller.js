@@ -72,22 +72,24 @@ browser.runtime.onMessage.addListener((msg) => {
             
     if(msg.info === "addFiles"){
         for (let file of msg.addFiles) {
-            switch (file.type) {
-                case "js":
-                    addJS(file);
-                    break;
-                case "css":
-                    addCSS(file);
-                    break;
-                case "script-link":
-                    addScriptlink(file);
-                    break;
-                case "other":
-                    addOther(file);
-                    break;
-            
-                default:
-                    break;
+            if(file.isEnabled !== false){
+                switch (file.type) {
+                    case "js":
+                        addJS(file);
+                        break;
+                    case "css":
+                        addCSS(file);
+                        break;
+                    case "script-link":
+                        addScriptlink(file);
+                        break;
+                    case "other":
+                        addOther(file);
+                        break;
+                
+                    default:
+                        break;
+                }
             }
         }
         
