@@ -35,7 +35,7 @@ function createGetFilesMsg(){
 // Get an EventHandler for attachedScriptChbxs
 function getAttachedScriptChbxChangeHandler(id, oldFile){
     return ()=>{
-        debug.innerText += id + " changed to " + document.getElementById(id).checked + "\n";
+        //debug.innerText += id + " changed to " + document.getElementById(id).checked + "\n";
         let newFile = oldFile;
         newFile.isEnabled = document.getElementById(id).checked;
         browser.runtime.sendMessage(createIsEnabledChangedMsg(oldFile, newFile));
