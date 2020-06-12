@@ -66,7 +66,6 @@ function addOther(file){
 
 // Handle incoming msgs
 browser.runtime.onMessage.addListener((msg) => {
-    console.log("msg", msg);
     if(msg.receiver !== "content_controller")
             return;
             
@@ -95,5 +94,3 @@ browser.runtime.onMessage.addListener((msg) => {
         
     }
 });
-
-console.log("controller started");

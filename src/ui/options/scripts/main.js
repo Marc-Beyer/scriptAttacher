@@ -214,8 +214,6 @@ function getNewFile(){
         file: fileTextArea.value
     }
 
-    console.log("newFile", newFile);
-
     // Check if the name was changed, if true check if the name already exists
     if(curFile !== undefined && newFile.name === curFile.name){
 

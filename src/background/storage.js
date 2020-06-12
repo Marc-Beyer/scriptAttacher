@@ -16,7 +16,6 @@ function getFilesWithUrl(url){
     for (let file of files) {
         for (let fileUrl of file.urls) {
             if(url.match(fileUrl)){
-                console.log("FILE Matches " + url, file);
                 matchingFiles.push(file);
             }
         }
@@ -44,6 +43,7 @@ async function handleTabUpdate(tabId, changeInfo, tabInfo) {
 
 // Set the defaultStorage
 browser.runtime.onInstalled.addListener(details => {
+    if(details.reason === "install")
     browser.storage.local.set(defaultStorage);
 });
 
@@ -77,7 +77,6 @@ browser.runtime.onMessage.addListener((msg, sender) => {
     }
 
     if(msg.info === "fileEdited"){
-        console.log("files before edit", files);
         if(msg.oldFile === undefined){
             if(msg.newFile !== undefined){
                 files.push(msg.newFile);
@@ -93,7 +92,6 @@ browser.runtime.onMessage.addListener((msg, sender) => {
                 }
             }
         }
-        console.log("files after edit", files);
         
         browser.storage.local.set({files:files});
         return new Promise((resolve) => {
