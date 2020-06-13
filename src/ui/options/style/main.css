@@ -119,23 +119,9 @@ body #fileHeader button {
   height: 1.5rem;
 }
 
-body #fileTextArea {
-  background: #333333;
-  color: #d6d6d6;
-  border: none;
-  resize: vertical;
-  -moz-tab-size: 3;
-    -o-tab-size: 3;
-       tab-size: 3;
-  min-width: 96%;
-  min-height: 30rem;
-  margin: 1%;
-  margin-bottom: 0;
-  padding: 1%;
-}
-
 body #fileLable {
-  margin-top: 0;
+  margin-bottom: 0;
+  margin-top: 1%;
   margin-left: 1%;
   margin-right: 1%;
   color: #919191;
@@ -157,6 +143,21 @@ body #fileLable #fileUpBtn {
 
 body #fileLable #fileEnableDisablenBtn {
   width: auto;
+}
+
+body #fileTextArea {
+  background: #333333;
+  color: #d6d6d6;
+  border: none;
+  resize: vertical;
+  -moz-tab-size: 3;
+    -o-tab-size: 3;
+       tab-size: 3;
+  min-width: 96%;
+  min-height: 30rem;
+  margin: 1%;
+  margin-top: 0;
+  padding: 1%;
 }
 
 body #moreOptionsContainer {

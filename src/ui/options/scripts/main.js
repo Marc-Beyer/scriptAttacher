@@ -244,7 +244,9 @@ async function fileSaveBtnClickHandler(){
             setUrl();
         }
     }
-    loadingImg.style.display = "none";
+    window.setTimeout(()=>{
+        loadingImg.style.display = "none";
+    },500);
 }
 
 // Set the curFile and the fileLableSpan
@@ -450,7 +452,7 @@ exportBtn.addEventListener("click", exportBtnClickHandler);
 fileEnableDisablenBtn.addEventListener("click", fileEnableDisablenBtnClickHandler);
 
 if (window.File && window.FileReader && window.FileList && window.Blob) {
-    //The file-APIs are supported.
+    // The file-APIs are supported.
     fileLoaderBtn.addEventListener('change', startRead, false);
 }
 

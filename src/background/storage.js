@@ -1,4 +1,4 @@
-//all files stored
+// All files stored
 let files;
 
 // Creates a AddFileMsg and return it
@@ -41,10 +41,11 @@ async function handleTabUpdate(tabId, changeInfo, tabInfo) {
     }
 }
 
-// Set the defaultStorage
+// Set the defaultStorage if the add-on is installed the first time
 browser.runtime.onInstalled.addListener(details => {
-    if(details.reason === "install")
-    browser.storage.local.set(defaultStorage);
+    if(details.reason === "install"){
+        browser.storage.local.set(defaultStorage);
+    }
 });
 
 // Get the storage
@@ -67,21 +68,26 @@ browser.storage.onChanged.addListener(getStorage);
 
 // Listen for msgs
 browser.runtime.onMessage.addListener((msg, sender) => {
-    if(msg.receiver !== "background_storage")
+    if(msg.receiver !== "background_storage"){
         return;
+    }
 
+    // Request all files
     if(msg.info === "getFiles"){
         return new Promise((resolve) => {
             resolve(files);
         });
     }
 
+    // Edited one file. Get the edited file and set it to the storage
     if(msg.info === "fileEdited"){
+        // if msg.oldFile is undefined msg.newFile is a completely new file
         if(msg.oldFile === undefined){
             if(msg.newFile !== undefined){
                 files.push(msg.newFile);
             }
         }else{
+            // Search the edited file(msg.oldFile) in files and replace it with msg.newFile
             for (let file of files) {
                 if(file.name === msg.oldFile.name){
                     if(msg.newFile === undefined){
@@ -93,12 +99,14 @@ browser.runtime.onMessage.addListener((msg, sender) => {
             }
         }
         
+        // Set the edited files to the sorage
         browser.storage.local.set({files:files});
         return new Promise((resolve) => {
             resolve(files);
         });
     }
 
+    // Replace all FIles with msg.newFiles and set it to the storage
     if(msg.info === "filesLoaded"){
         files = msg.newFiles;
         browser.storage.local.set({files:files});
@@ -108,4 +116,5 @@ browser.runtime.onMessage.addListener((msg, sender) => {
     }
 });
 
+// Get the Storage at the start
 getStorage();
