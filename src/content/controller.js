@@ -64,6 +64,29 @@ function addOther(file){
     document.head.appendChild(other);
 }
 
+// Check the type of the file and add it
+function addFile(file){
+    if(file.isEnabled !== false){
+        switch (file.type) {
+            case "js":
+                addJS(file);
+                break;
+            case "css":
+                addCSS(file);
+                break;
+            case "script-link":
+                addScriptlink(file);
+                break;
+            case "other":
+                addOther(file);
+                break;
+        
+            default:
+                break;
+        }
+    }
+}
+
 // Handle incoming msgs
 browser.runtime.onMessage.addListener((msg) => {
     if(msg.receiver !== "content_controller")
@@ -71,26 +94,15 @@ browser.runtime.onMessage.addListener((msg) => {
             
     if(msg.info === "addFiles"){
         for (let file of msg.addFiles) {
-            if(file.isEnabled !== false){
-                switch (file.type) {
-                    case "js":
-                        addJS(file);
-                        break;
-                    case "css":
-                        addCSS(file);
-                        break;
-                    case "script-link":
-                        addScriptlink(file);
-                        break;
-                    case "other":
-                        addOther(file);
-                        break;
-                
-                    default:
-                        break;
-                }
-            }
+            addFile(file);
         }
-        
+    }
+
+    if(msg.info === "editedFile"){
+        let oldScript = document.getElementById("scriptAttacher_" + msg.editedFile.name);
+        if(oldScript !== null){
+            oldScript.remove();
+        }
+        addFile(msg.editedFile);
     }
 });

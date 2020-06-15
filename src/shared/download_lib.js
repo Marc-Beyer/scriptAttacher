@@ -15,5 +15,3 @@ function download(data, filename, type) {
 		}, 0);
 	}
 }
-
-console.log("ssssssssssssssssssssssssss");

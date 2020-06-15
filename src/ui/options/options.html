@@ -30,22 +30,62 @@
             </div>
         </div>
         <div id="fileHeader">
-            <input type="text" id="fileNameInput" title="name">
-            <select id="fileTypeSelect"  title="type">
-                <option value="js">js</option>
-                <option value="css">css</option>
-                <option value="script-link">script-link</option>
-                <option value="other">other</option>
-            </select>
-            <input type="text" id="fileUrlsInput" title="the urls are separated by a whitespace-character (this:' ')">
-            <button id="fileSaveBtn">save</button>
+            <table>
+                <tr>
+                    <td></td>
+                    <td>
+                        <button id="fileUpBtn">Move file up</button>
+                        <button id="fileDownBtn">Move file down</button>
+                        <button id="fileDeleteBtn">delete</button>
+                        <button id="fileSaveBtn">save</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        File name:
+                    </td>
+                    <td>
+                        <input type="text" id="fileNameInput" title="name">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        File type:
+                    </td>
+                    <td>
+                        <select id="fileTypeSelect"  title="type">
+                            <option value="js">js</option>
+                            <option value="css">css</option>
+                            <option value="script-link">script-link</option>
+                            <option value="other">other</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Url regex:
+                    </td>
+                    <td>
+                        <input type="text" id="fileUrlsInput" title="the urls are separated by a whitespace-character (this:' ')">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Enable File:
+                    </td>
+                    <td>
+                        <button id="fileEnableDisablenBtn" value="true">enable</button>
+                    </td>
+                </tr>
+            </table>
         </div>
         <div id="fileLable">
             <span id="fileLableSpan">file selected: '' - this is a new file</span>
-            <button id="fileDeleteBtn">x</button>
-            <button id="fileUpBtn">v</button>
-            <button id="fileDownBtn">v</button>
-            <button id="fileEnableDisablenBtn" value="true">enable</button>
         </div>
         <textarea id="fileTextArea"></textarea>
         <div id="moreOptionsContainer">

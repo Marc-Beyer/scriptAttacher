@@ -3,7 +3,7 @@ let defaultFile = {
     name: "new file",
     isEnabled: false,
     type: "js",
-    urls: [".*"],
+    urls: ["^https*://www.example.com/*.*$"],
     file: "// Insert your code here //"
 }
 

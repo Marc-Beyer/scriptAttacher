@@ -10,6 +10,16 @@ function createAddFilesMsg(addFiles){
     };
 }
 
+
+// Creates a EditedFileMsg and return it
+function createEditedFileMsg(editedFile){
+    return {
+        receiver: "content_controller",
+        info: "editedFile",
+        editedFile: editedFile
+    };
+}
+
 // Get all files that match the url
 function getFilesWithUrl(url){
     let matchingFiles = [];
@@ -98,6 +108,33 @@ browser.runtime.onMessage.addListener((msg, sender) => {
                 }
             }
         }
+
+        // Upadte all tabs
+        let querying = browser.tabs.query({});
+        querying.then((tabs)=>{
+            for(let tab of tabs){
+                if(tab.url !== undefined){
+                    if(msg.newFile === undefined){
+                        if(msg.oldFile !== undefined){
+                            browser.tabs.sendMessage(tab.id, createEditedFileMsg({name: msg.oldFile.name, isEnabled: false}));
+                        }
+                    }else{
+                        let matchesUrl = false;
+                        for (let url of msg.newFile.urls) {
+                            if(tab.url.match(url)){
+                                matchesUrl = true;
+                            }
+                        }
+                        if(matchesUrl){
+                            if(msg.oldFile !== undefined && msg.newFile.name !== msg.oldFile.name){
+                                browser.tabs.sendMessage(tab.id, createEditedFileMsg({name: msg.oldFile.name, isEnabled: false}));
+                            }
+                            browser.tabs.sendMessage(tab.id, createEditedFileMsg(msg.newFile));
+                        }
+                    }
+                }
+            }
+        });
         
         // Set the edited files to the sorage
         browser.storage.local.set({files:files});

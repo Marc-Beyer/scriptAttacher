@@ -141,7 +141,7 @@ function updateFileContainer(name){
             updatefileSelect(urlSelect.value);
             return;
         }
-        curFileEdited = false;
+        setFileEditedStatus(false);
     }
  
     //todo not nice
@@ -198,10 +198,23 @@ function fileSelectChangeHandler(event){
 
 // Handle a change of fileTextArea, fileNameInput, fileTypeSelect, fileUrlsInput
 function fileChangeHandler(event){
-    curFileEdited = true;
-    window.onbeforeunload = function() {
-        return "You have unsaved changes! Do you still want leave the page?";
-    };
+    setFileEditedStatus(true);
+}
+
+// Set curFileEdited and change the saveBtn color
+function setFileEditedStatus(fileEdited){
+    curFileEdited = fileEdited;
+    if(fileEdited){
+        fileSaveBtn.style.background = "#535353";
+        // Show popup when leaving the page
+        window.onbeforeunload = function() {
+            return "You have unsaved changes! Do you still want leave the page?";
+        };
+    }else{
+        // Dont show popup anymore when leaving the page
+        window.onbeforeunload = function() {};
+        fileSaveBtn.style.background = "";
+    }
 }
 
 // Get the new file
@@ -238,7 +251,7 @@ async function fileSaveBtnClickHandler(){
         if(newFile.error !== undefined){
             alert(newFile.error);
         }else{
-            curFileEdited = false;
+            setFileEditedStatus(false);
             files = await browser.runtime.sendMessage(createFileEditedMsg(curFile, newFile));
             setCurFile(newFile);
             setUrl();
@@ -293,12 +306,12 @@ function filesAddBtnClickHandler(){
             updatefileSelect(urlSelect.value);
             return;
         }
-        curFileEdited = false;
+        setFileEditedStatus(false);
     }
     
     setCurFile(undefined);
     updateFileContainer(undefined);
-    curFileEdited = true;
+    setFileEditedStatus(true);
     
     // Update selection
     urlSelect.value = "<all files>";
@@ -392,7 +405,7 @@ function fileEnableDisablenBtnClickHandler(){
         fileEnableDisablenBtn.value = "true";
         fileEnableDisablenBtn.textContent = "disable";
     }
-    curFileEdited = true;
+    setFileEditedStatus(true);
 }
 
 // Move file

@@ -78,18 +78,21 @@ body{
     }
 
     #fileHeader{
-        display: flex;
-        flex-direction: row;
-        justify-content: space-evenly;
-        align-items: stretch;
-
         width: 100%;
 
+        table{
+            width: calc(100% - 2rem);
+            margin: 1rem;
+
+            td{
+                width: 50%;
+            }
+        }
         input{
             background: $secondary-background-color;
             color: $primary-text-color;
             border: none;
-            width: 38%;
+            width: 100%;
             padding-left: 0.5%;
         }
 
@@ -97,20 +100,18 @@ body{
             background: $secondary-background-color;
             color: $primary-text-color;
             border: none;
-            width: 9%;
+            width: 100%;
         }
 
         button{
-            width: 9%;
             height: 1.5rem;
         }
     }
 
     #fileLable{
+        width: calc(100% - 2rem);
+        margin: 1rem;
         margin-bottom: 0;
-        margin-top: 1%;
-        margin-left: 1%;
-        margin-right: 1%;
         color: $secondary-text-color;
 
         border: 1px solid $secondary-background-color;
@@ -141,11 +142,11 @@ body{
         resize: vertical;
         tab-size : 3;
 
-        min-width: 96%;
+        width: calc(100% - 4rem);
+        margin: 1rem;
         min-height: 30rem;
-        margin: 1%;
         margin-top: 0;
-        padding: 1%;
+        padding: 1rem;
     }
 
     #moreOptionsContainer{
