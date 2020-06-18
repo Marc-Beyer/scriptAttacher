@@ -14,7 +14,7 @@ const defaultStorage = {"files": [
     "isEnabled": false,
     "type": "script-link",
     "urls": [
-      "^https*://www.youtube.com/*.*$"
+      "^https*://www.netflix.com/*.*$"
     ],
     "file": "https://marc-beyer.github.io/scriptAttacher/example%20scripts/netflixVolume.js"
   },
@@ -32,6 +32,7 @@ const defaultStorage = {"files": [
     "isEnabled": false,
     "type": "css",
     "urls": [
+      "^https*://www.google.de/*.*$",
       "^https*://www.google.com/*.*$"
     ],
     "file": "body, .RNNXgb, .gNO89b, .RNmpXc, .aajZCb, .fbar, #hdtbSum, .sfbg, .nojsv, .GHDvEf{\n\tbackground: #181a1b !important;\n\tcolor: #dcd9d4 !important;\n}\n\n.sbhl{\n\tfont-family: 'Titillium Web' !important;\n\tbackground: #2a2e31 !important;\n\tcolor: #dcd9d4 !important;\n}\n\n.minidiv .sfbg{\n\tborder-bottom: 1px solid #333333!important;\n}\n\nspan, input{\n\tcolor: #dcd9d4 !important;\n}\n\na, .iUh30, .fl{\n\tcolor: #3e80ff !important;\n}\n\n.RNNXgb, .gNO89b, .RNmpXc, #fbar, .fbar, .b2hzT, #hdtb, .xtSCL{\n\tborder-color: #333333 !important;\n}\n.RNNXgb:hover{\n\tborder-color: #333333!important;\n}\n\ndiv, h1, h2, h3, h4, span, input, a, li{\n\tfont-family: 'Titillium Web' !important;\n}"
@@ -41,7 +42,6 @@ const defaultStorage = {"files": [
     "isEnabled": false,
     "type": "js",
     "urls": [
-      "^https*://www.google.de/*.*$",
       "^https*://www.google.com/*.*$"
     ],
     "file": "console.log(\"Hello google!\");"
