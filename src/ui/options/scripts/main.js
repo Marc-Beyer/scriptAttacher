@@ -469,5 +469,13 @@ if (window.File && window.FileReader && window.FileList && window.Blob) {
     fileLoaderBtn.addEventListener('change', startRead, false);
 }
 
+// Overridew CTRL + S
+document.addEventListener("keydown", (e)=>{
+    if ((window.navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)  && e.keyCode == 83) {
+        e.preventDefault();
+        fileSaveBtn.click();
+    }
+}, false);
+
 // Get the stored files from background_storage and update urlSelect
 getFiles();
